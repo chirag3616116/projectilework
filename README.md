@@ -21,11 +21,7 @@ Software Requirements:
 I took csv file that was given to us as an input and then by using Sparksession firstly started the code and afterwards:
 import org.apache.spark.sql.{SaveMode, SparkSession}
 Savemode is for overwrite mode  while writing or saving anything.
-val spark = SparkSession.builder()
-  .appName(name = "Create Dataframe From Csv File")
-  .master(master = "local[*]")
-  .getOrCreate()
-* is for partitions that this file gonna make 
+
 
 .appname is for purpose of taking a name for file.
 .master is for the purpose of cluster
@@ -43,12 +39,6 @@ for the purpose of saving the files in csv format json format and parquet format
 
                                 About Task 2:
 (a).Apply the specified transformationsI took csv file that was given to us as an input and then by using Sparksession firstly started the code and afterwards:
-val spark = SparkSession.builder()
-  .appName(name = "Create Dataframe From Csv File")
-  .master(master = "local[*]")
-  .getOrCreate()
-* is for partitions that this file gonna make 
-
 .appname is for purpose of taking a name for file.
 .master is for the purpose of cluster
 .getorceate()is for the purpose of making sparksession if not made
@@ -73,46 +63,15 @@ and data_source into singal_code and signal_value.
 ------------------------------------------------------------------------------------------------------------------------
 What I have done.
 
-*. lit() and typedlit() provide constanst value to a column.
 import org.apache.spark.sql.functions.{col,current_timestamp, lit}
+Have imported few reasonable and required libraries like import org.apache.spark.sql.functions.{expr, hour, minute, second}
+import org.apache.spark.sql.{SaveMode, SparkSession}
+import org.apache.spark.sql.functions.{col, current_date, current_timestamp, from_utc_timestamp, lit, map_values, to_timestamp, to_utc_timestamp}
 
 For whole transformation have done the following part:
-->.withColumn("processing_dateandtime_utc", current_timestamp())
-[this in quotes will take the same quote as column name and currenttimestamp() function will give  the current date and time .]
-
-->.withColumn("companyname", lit("Xenonstack"))i
-[this will take column name as companyname and lit function is used to make the paremeter added as values in the whole column.]
-
-->.withColumn("datasource", lit("10min"))
-[datasource will be taken as input of column name and values would be “10min” because of lit function operation.]
-
-import org.apache.spark.sql.functions.{expr, hour, minute, second}
-for the purpose of handling with timestamp date time expr etc.
-> .withColumnRenamed("timestamp_utc","end__timestamp_utc")
-     .withColumnRenamed("end_timestamp_utc", "timestamp_utc")
-      .withColumnRenamed("end__timestamp_utc", "end_timestamp_utc")
-{This will rename timestamp_utc to end_timestamp_utc.}
-->.withColumn("start_timestamp_utc", col("end_timestamp_utc") + expr("INTERVAL -10 minutes"))
-{This will create  start_timestamp_utc to end_timestamp_utc -10min}
-expr is used to make the values dynamic and we can change it with or in accordance to our reference
-
--> val a =users_df_1
- .selectExpr("signal_code","signal_value","end_timestamp_utc","turbine_id","start_timestamp_utc","timestamp_utc","company_name","signal_date","processing_dateandtime_utc","datasource", "stack(2,'source_filename',source_filename,'companyname',companyname)")
-
-.withColumnRenamed("source_filename", "signal_code")
-.withColumnRenamed("companyname", "signal_code")
-.withColumnRenamed("source_filename", "signal_value")
-.withColumnRenamed("companyname", "signal_value")
----->.slectExpr ...it takes sql expression as an input  used to transform columns in dataframe
- 
-{---->columnrename is used for changing the name of the column.}
-.withColumn("processing_dateandtime_utc", current_timestamp()
-this in quotes will take the same quote as column name and currenttimestamp() function will give  the current date and time .
-
-Task2(b):
-a.write.mode(SaveMode.Overwrite).option("overwriteSchema", true).format("delta")
-.save("/home/chirag/Desktop/alka.delta")
-a.show()
+We need to achieve the whole so for that we have added 2 columns with specific formatting i.e. used for the purpose of adding the new columns in the current dataframe .(.withcolumn("",lit()))is used to add column.
+.withincolumnrename("","")used to rename the columns.
+.selectexpr()used to write sql expressions in dataframe
 
 Instead of saving it to parquet file save it to .delta format to get the whole of how to manage and rollback the all comits we have made.
 
